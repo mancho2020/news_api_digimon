@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API de Digimon Interactiva</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">    <!-- Agregar enlace a la hoja de estilos de Bootstrap -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        #digimon-table { /* Estilo general de la tabla */
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        #digimon-table th,/* Estilo general de la tabla */
+        #digimon-table td { /* Estilo general de la tabla */
+            border: 1px solid #ffffff;
+            padding: 8px;
+            text-align: center;
+        }
+        #digimon-table th { /* Estilo general de la tabla */
+            background-color: #343a40;
+            color: #ffffff;
+        }
+        #digimon-table td { /* Estilo general de la tabla */
+            background-color: #1c1f22;
+            color: aliceblue;
+        }
+        #digimon-table tbody tr:hover {/* Ajustar el espaciado entre el logo y el texto en la barra de navegación */
+            background-color: #4c5054;
+        }
+        .navbar-brand i {/* Espacio entre el icono y el texto */
+            margin-right: 5px;/* Ajustar el espaciado entre el logo y el texto en la barra de navegación */
+        }
+        .content-area {
+            padding-top: 10px; /* Reducir el espacio superior en el contenido principal */
+            margin-bottom: 100px; /* Altura del footer */
+        }
+        .sidebar .nav-item {
+            margin-bottom: 5px;/* Espacio entre elementos de la barra lateral */
+        }
+        .footer {
+            position: fixed; /* Fijar el footer *//* Reducir el espacio inferior en el footer */
+            bottom: 0;
+            left: 0;    /* Pegar el footer en la parte inferior */
+            width: 100%;
+            padding: 10px 0;
+            background-color: #343a40;/* Ancho completo */
+        }
+        body {
+            background-image: url(https://images5.alphacoders.com/487/487460.png);
+            color: aliceblue;
+        }
+        table {color: aliceblue; }
+        th { color: aliceblue;}
+        td {color: aliceblue; }
+        @media (min-width: 768px) {   /* Ajustar la barra lateral para que ocupe toda la página */
+            .sidebar {
+                position: fixed;
+                top: 56px;
+                bottom: 0;
+                left: 0;/* Altura de la barra de navegación */
+                z-index: 100;/* Asegura que esté por encima del contenido principal */
+                padding: 0;/* Elimina el margen interno */
+                overflow-y: auto; /* Habilita el desplazamiento si hay demasiados elementos en la barra lateral */
+                background-color: #343a40;
+                width: 250px;   /* Ajusta el ancho de la barra lateral */
+            }
+            .content-area {
+                margin-left: 250px;  /* Ancho de la barra lateral */
+            }
+            body {
+                padding-top: 56px; /* Evitar que la barra de navegación se mueva al hacer scroll */
+                /* Altura de la barra de navegación */
+            }
+        }
+
+        /* Estilos para el select */
+        #digimon-select {
+            width: 100%;
+            max-width: 300px;
+            margin-top: 10px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            color: aliceblue;
+            background-color: #1c1f22;
+        }
+        button.btn {
+            margin-top: 10px;/* Estilos para los botones */
+            color: #fff;
+        }
+        button.btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        button.btn-success {
+            background-color:  #007bff;
+            border-color: #007bff;
+        }
+        button.btn-primary:hover,
+        button.btn-success:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        .sidebar .nav-link::before {
+            font-family: "Font Awesome 5 Free";/* Añadir iconos a la barra lateral y la barra de navegación */
+            content: '\f105';
+            margin-right: 8px;/* Ícono de lista para los elementos de la barra lateral */
+        }
+        .navbar-nav .nav-item .nav-link::before {
+            font-family: "Font Awesome 5 Free";
+            content: '\f30b';
+            margin-right: 8px;/* Ícono de enlace para los elementos de la barra de navegación */
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top m-0">
+        <a class="navbar-brand" href="#"><i class="fab fa-optin-monster"></i> API de Digimon</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#digimon-info"><i class="fas fa-info-circle"></i> Información de
+                        Digimon</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#digimon-table"><i class="fas fa-table"></i> Tabla de Digimon</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#new-section"><i class="fas fa-film"></i> Películas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#new-section"><i class="fas fa-users"></i> Personajes</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- Barra lateral de navegación con color oscuro y sin espacios -->
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-3 d-none d-md-block bg-dark sidebar p-0">
+                <div class="position-sticky">
+                    <ul class="nav flex-column">
+                        <!-- Puedes agregar más elementos a la barra lateral si lo deseas -->
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#digimon-info"><i class="fas fa-info-circle"></i>
+                                Información</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#digimon-table"><i class="fas fa-table"></i> Tabla Digimon</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#digimon-characters-table"><i class="fas fa-users"></i>
+                                Personajes</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <!-- Contenido principal -->
+            <main class="col-md-9 col-lg-10 px-md-4 content-area">
+                <h1 class="mt-4">Información de Digimon</h1>
+                <label for="digimon-select">Selecciona un Digimon:</label>
+                <select id="digimon-select" class="form-control"></select>
+                <button onclick="getDigimon()" class="btn btn-primary mt-2">Buscar Digimon</button>
+                <button onclick="addSelectedDigimon()" class="btn btn-success mt-2">Agregar a la Tabla</button>
+                <div id="digimon-info" class="mt-4"></div>
+
+                <h2 class="mt-4">Tabla de Digimon</h2>
+                <div class="table-responsive">
+                    <table id="digimon-table" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Nivel</th>
+                                <th>Tipo</th>
+                                <th>Imagen</th>
+                            </tr>
+                        </thead>
+                        <tbody id="digimon-table-body"></tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+    </div>
+    <!-- Footer con color oscuro y sin espacios -->
+    <footer class="footer mt-4 bg-dark p-2">
+        <div class="container text-center">
+            <span class="text-muted">Digimon &copy; 2023</span>
+        </div>
+    </footer>
+
+    <!-- Scripts de Bootstrap y script.js -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
